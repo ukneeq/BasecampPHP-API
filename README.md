@@ -42,6 +42,27 @@ Currently only supports private apps.
 ```
 
 ## Function List
+### Projects
+createProject($name, $description)
+getProjects()
+getArchivedProjects();
+getProject($projectID)
+updateProject($projectID, $name, $descption)
+archiveProject($projectID, $archive)
+
+### People
+### Accesses
+### Events
+### Topics
+### Messages
+### Comments
+### Todo lists
+### Todos
+### Documents
+### Attachments
+### Uploads
+### Calendars
+### Calendar Events
 
 ## Thanks
 Although my attempts to search for a php library for the new basecamp API came up empty I drew inspiration from a library

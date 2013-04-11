@@ -1,2 +1,3 @@
 # Ignore Testing Directory
 tests/
+.gitignore
