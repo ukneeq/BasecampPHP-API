@@ -1,6 +1,7 @@
 ## Synopsis
 Basecamp is a web service project manager found at http://www.basecamp.com/.
-Basecamp provides a REST API for developer access. Basecamp released a new version of their service with completely new APIs.
+Basecamp provides a REST API for developer access. The all-new Basecamp has an all-new API. It is not compatible with the Basecamp Classic API. All integrations will have to be updated to use the new API. The core ingredients are still the same, though. This is a REST-style API that uses JSON for serialization and OAuth 2 for authentication.
+
 BasecampPHP-API is a PHP library that encapsulates all of the Basecamp API features into a simple to use PHP class.
 
 See the README for details.

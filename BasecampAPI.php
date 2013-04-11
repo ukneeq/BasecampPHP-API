@@ -64,14 +64,105 @@
     /* public methods */
 
     /**
-     * Get all projects in Basecamp.
+     * Get all projects from Basecamp.
+     *
+     * @return array Array of project objects
      */
     public function getProjects()
     {
-       $request = $this->baseurl . "projects.json";
-       $result = $this->processRequest("GET", $request, array());
+      $request = $this->baseurl . "projects.json";
+      $result = $this->processRequest("GET", $request, array());
 
-       return $result; 
+      return $result; 
+    }
+
+    /**
+     * Get all archived projects from Basecamp.
+     *
+     * @return array Array of project objects
+     */
+    public function getArchivedProjects()
+    {
+      $request = $this->baseurl . "projects/archived.json";
+      $result = $this->processRequest("GET", $request, array());
+
+      return $result; 
+    }
+
+    /**
+     * Get specific project from Basecamp.
+     *
+     * @return object Project object
+     */
+    public function getProject($projectID)
+    {
+      $request = $this->baseurl . "projects/$projectID.json";
+      $result = $this->processRequest("GET", $request, array());
+
+      return $result; 
+    }
+
+    /**
+     * Create project in Basecamp.
+     *
+     * @param string $name A String to store project name
+     * @param string $descript A String to store description
+     *
+     * @return object Project object
+     */
+    public function createProject($name, $description)
+    {
+      $params = array("name" => "$name",
+                      "description" => "$description");
+      $request = $this->baseurl . "projects.json";
+      $result = $this->processRequest("POST", $request, stripslashes(json_encode($params)));
+
+      return $result;
+    }
+
+    /**
+     * Update project in Basecamp.
+     *
+     * @param int $projectID Unsigned INT to store project id
+     * @param string $name A String to store project name
+     * @param string $descript A String to store description
+     *
+     * @return object Project object
+     */
+    public function updateProject($projectID, $name, $description)
+    {
+      $params = array();
+      if ($name)
+      {
+        $params["name"] = $name;
+      }
+      if ($description)
+      {
+        $params["description"] = $description;
+      }
+
+      $request = $this->baseurl . "projects/$projectID.json";
+      $result = $this->processRequest("PUT", $request, stripslashes(json_encode($params)));
+
+      return $result;
+    }
+
+    /**
+     * Archive/Activate project in Basecamp.
+     *
+     * @param int $projectID Unsigned INT to represent basecamp project id.
+     * @param bool $archive A bool value to represent if project should be
+     * archived or activated.
+     *
+     * @return object Project object
+     */
+    public function archiveProject($projectID, $archive)
+    {
+      $params = array("archived" => $archive);
+      $request = $this->baseurl . "projects/$projectID.json";
+      $result = $this->processRequest("PUT", $request, stripslashes(json_encode($params)));
+
+      return $result;
     }
 
     /* private methods */
@@ -96,6 +187,7 @@
           $request_headers = array("Content-Type: application/json; charset=utf-8", "Accept: application/json");
           curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
           if (is_array($payload)) $payload = http_build_query($payload);
+
           curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
           curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
         break;
@@ -108,6 +200,7 @@
       if ($errno) throw new Exception("cUrl error: $error", $errno);
 
       list($message_headers, $message_body) = preg_split("/\r\n\r\n|\n\n|\r\r/", $response, 2);
+      //print_r($message_body);
       $response_headers = $this->curl_parse_headers($message_headers);
       $statusCode = $response_headers['http_status_code'];
       if ($statusCode >= 400)
@@ -115,7 +208,7 @@
         throw new Exception("HTTP Error $statusCode:\n" . print_r(compact('method', 'request', 'request_headers', 'response'), 1));
       }
 
-      return json_decode($response);
+      return json_decode($message_body);
     }
 
     private function curl_parse_headers($message_headers)
