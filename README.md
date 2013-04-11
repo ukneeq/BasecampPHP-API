@@ -43,12 +43,12 @@ Currently only supports private apps.
 
 ## Function List
 ### Projects
-createProject($name, $description)
-getProjects()
-getArchivedProjects();
-getProject($projectID)
-updateProject($projectID, $name, $descption)
-archiveProject($projectID, $archive)
+createProject($name, $description)   
+getProjects()   
+getArchivedProjects();   
+getProject($projectID)   
+updateProject($projectID, $name, $descption)   
+archiveProject($projectID, $archive)   
 
 ### People
 ### Accesses
