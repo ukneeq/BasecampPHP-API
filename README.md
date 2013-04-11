@@ -1,8 +1,8 @@
 ## Synopsis
-Basecamp is a web service project manager found at http://www.basecamp.com/.  
-Basecamp provides a REST API for developer access. Basecamp released a new version of their service
-with completely new APIs.
-BasecampPHP-API is a PHP library that encapsulates all of the Basecamp API features into a simple to use PHP class. 
+Basecamp is a web service project manager found at http://www.basecamp.com/.
+Basecamp provides a REST API for developer access. Basecamp released a new version of their service with completely new APIs.
+BasecampPHP-API is a PHP library that encapsulates all of the Basecamp API features into a simple to use PHP class.
+
 See the README for details.
 
 ## Author
@@ -20,11 +20,25 @@ Download the [latest version of BasecampAPI.php](http://fedil.ukneeq.com/Basecam
 
 ```php
 <?php
-require 'path/to/BasecampAPI.php';
+require '/path/to/BasecampAPI.php';
 ?>
 ```
 
 ### Usage
+Currently only supports private apps.
+```php
+<?php
+  $appName = 'MyApp';
+  $appContact = 'youremail@example.com';
+
+  $basecampAccountID = '0000000';
+  $basecampUsername = 'username';
+  $basecampPassword = 'password';
+
+  $bc = new Basecamp("$basecampAccountID", "$basecampUsername", "$basecampPassword", "$appName", "$appContact");
+
+?>
+```
 
 ## Function List
 

@@ -86,6 +86,7 @@
       curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
       curl_setopt($ch, CURLOPT_USERPWD, "$this->username:$this->password");
       curl_setopt($ch, CURLOPT_USERAGENT, "$this->useragent");
+
       switch($method)
       {
         case "GET":
@@ -107,10 +108,16 @@
       if ($errno) throw new Exception("cUrl error: $error", $errno);
 
       list($message_headers, $message_body) = preg_split("/\r\n\r\n|\n\n|\r\r/", $response, 2);
-      print "Message:\n" . json_decode($message_body);
       $response_headers = $this->curl_parse_headers($message_headers);
-      print "Response: " . $response_headers['http_status_code'] . "\n";
+      $statusCode = $response_headers['http_status_code'];
+      if ($statusCode >= 400)
+      {
+        throw new Exception("HTTP Error $statusCode:\n" . print_r(compact('method', 'request', 'request_headers', 'response'), 1));
+      }
+
+      return json_decode($response);
     }
+
     private function curl_parse_headers($message_headers)
     {
       $header_lines = preg_split("/\r\n|\n|\r/", $message_headers);
